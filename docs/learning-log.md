@@ -128,3 +128,21 @@ Takeaways:
 - **Testing the "never overwrite" promise took three tries.** A force-push mutant (`git push -f`) survived the first test set, because after the rebase a forced push and a normal one behave identically. My first race test then moved `main` from a `pre-push` hook, but that fires mid-push, when Git's own ref locking rejects even a forced push, so it could not tell safe from unsafe either. The dangerous window is after the rebase and before the push; a `post-rewrite` hook runs exactly there. With that, the force-push mutant fails the suite and the real script passes. Two other tests were passing for the wrong reason at first (an error test satisfied by "script not found") and were tightened to require the real message.
 - The nightly sequence is now: 02:47 health check (probe, commit, dispatch a deploy), 03:17 scheduled deploy (bump submodule, rebuild, deploy). The health job probes the URL list from the submodule pin on `main`, so a new upstream API is first checked the night after the bump brings it in.
 - The first real run on GitHub's runner follows once this is merged. It is also the first run whose numbers count: local runs can be skewed by this machine's DNS (3 of 66 DNS failures were false positives locally).
+
+#### H3 first real run (2026-10-21, manual dispatch on GitHub's runner)
+
+| Check | Result |
+|---|---|
+| Runtime | Probe step 5 min 45 s (12:12:49 to 12:18:34 UTC); whole job about 6 min, all steps green |
+| Outcome mix, 2,165 URLs | ok 1,818 (84.0%), blocked 135 (6.2%), **failing 212 (9.8%)**: dns 60, gone 56, timeout 43, error 21, tls 21, refused 7, network 4 |
+| Bot commit | `e09de6d` by `github-actions[bot]`, "Link health check 2026-10-21", touching only `data/health.json` (24,866 bytes, sorted keys, every counter at 1) |
+| Auto-started deploy | Run `39598572427`, event `workflow_dispatch`, created 12:18:38Z (the same second as the redeploy step) and succeeded |
+| Live site | `health_checked` 2026-10-21; 212 APIs flagged, matching the 212 expected from `health.json` exactly; 212 "Failed latest check" badges, 0 dead; footer "Links last checked 2026-10-21."; the hide checkbox is present and hides nothing yet; console clean |
+
+How the runner compares with the earlier laptop run:
+- 204 of the runner's 212 failures also failed on the laptop (96%), and 195 of those 204 have the identical failure class. Only 8 failed on the runner alone (6 timeouts, 1 network, 1 error) and 14 on the laptop alone.
+- The laptop's DNS false positives are gone on the runner: `disqus.com` and `developer.foursquare.com` do not fail there.
+- Cloud IPs are blocked a bit more: `blocked` went from 99 to 135.
+- One-night blips exist on both networks: `verifier.meetchopra.com` failed DNS on the laptop and the runner during their probes, yet answers `302` shortly afterwards. This is the case the three-in-a-row rule is for.
+
+Nothing can be "dead" yet: that needs three failing runs in a row. Timeline: the first scheduled run is 2026-10-22 02:47 UTC (counters reach 2, and it proves the cron works), the second is 2026-10-23 02:47 UTC (counters reach 3, so persistent failures become "dead" on the site). H4, the accuracy audit of the flagged links, belongs after that second scheduled run.
