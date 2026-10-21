@@ -18,3 +18,13 @@ One entry per milestone: what we did, and the GitHub idea it taught.
 - Cross-check: parser says 2,169 APIs in 51 categories; an independent `awk` count of rows inside standard tables also says 2,169. The other 33 rows of the README's 2,202 are the promo and MCP tables.
 - Two APIs (TasteDive, Open-Meteo) appear in two categories upstream, so they appear twice here on purpose.
 - Output: `site/apis.json`, gitignored because the nightly job regenerates it.
+
+## M2: the site
+
+- Plain HTML, CSS and JavaScript in `site/`, no framework and no build step. `site/filter.js` holds the pure logic (search, filters, URL hash) and `site/app.js` does the DOM work. Keeping them apart lets the logic run in Node tests as well as the browser.
+- Filters: search text (every word must match name, description or category), category, "No API key needed", "HTTPS only", and "Works from a browser (CORS)". Filter state lives in the URL hash, so a filtered view is a shareable link, for example `#q=bitcoin&nokey=1`.
+- Run the JS tests with `node --test tests/filter.test.js` (12 tests). `node --test tests/` fails on Node 24: it treats the folder as a file.
+- Sanity-checked the tests by breaking the HTTPS filter on purpose: one test failed, then the original file went back.
+- Checked in a real browser against counts computed separately in Python: search "weather" gives 56, Weather plus all three toggles gives 13, the three toggles alone give 516, and the deep link `#q=bitcoin&nokey=1` gives 12. All matched.
+- Safety: the data comes from a list anyone can edit upstream, so cards are built with `textContent` (never `innerHTML`) and links only use `http(s)` URLs with `rel="noopener noreferrer"`.
+- To view it locally: `python3 scripts/build.py`, then `cd site && python3 -m http.server 8765` and open http://127.0.0.1:8765/. The page needs `site/apis.json`, which is generated and gitignored.

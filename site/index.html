@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API Explorer</title>
+  <meta name="description" content="Search and filter the public-apis list of free APIs.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>API Explorer</h1>
+      <p class="lede">Search free public APIs. Data comes from the <a href="https://github.com/public-apis/public-apis">public-apis</a> list.</p>
+    </header>
+
+    <form id="controls" role="search" onsubmit="return false">
+      <div class="row">
+        <label class="field grow">
+          <span>Search</span>
+          <input id="q" type="search" placeholder="weather, crypto, books" autocomplete="off">
+        </label>
+        <label class="field">
+          <span>Category</span>
+          <select id="category"><option value="">All categories</option></select>
+        </label>
+      </div>
+      <div class="row toggles">
+        <label><input id="nokey" type="checkbox"> No API key needed</label>
+        <label><input id="https" type="checkbox"> HTTPS only</label>
+        <label><input id="cors" type="checkbox"> Works from a browser (CORS)</label>
+        <button id="reset" type="button">Reset</button>
+      </div>
+    </form>
+
+    <p id="status" role="status" aria-live="polite">Loading…</p>
+    <ul id="results"></ul>
+    <button id="more" type="button" hidden>Show more</button>
+
+    <footer id="footer"></footer>
+  </main>
+
+  <script src="filter.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
