@@ -12,6 +12,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import healthcheck
+
 ROOT = Path(__file__).resolve().parent.parent
 README = ROOT / "vendor" / "public-apis" / "README.md"
 OUT = ROOT / "site" / "apis.json"
@@ -21,6 +23,10 @@ ROW_RE = re.compile(r"^\|\s*\[(?P<name>[^\]]+)\]\((?P<url>[^)\s]+)\s*\)\s*\|(?P<
 
 MIN_APIS = 1000
 MAX_MALFORMED_RATIO = 0.01
+
+# A link is called "dead" once it has failed this many health checks in a row;
+# fewer failures are just "failing". Not stored: tuning it needs no data migration.
+DEAD_AFTER = 3
 
 
 def _clean(cell):
@@ -114,6 +120,29 @@ def check_sanity(stats):
         sys.exit(f"build failed: {stats['malformed']} of {total} rows were malformed (over {MAX_MALFORMED_RATIO:.0%}).")
 
 
+def load_health(path):
+    """The failure state written by healthcheck.py. A missing file means no checks yet."""
+    try:
+        return healthcheck.load_state(path)
+    except ValueError as error:
+        sys.exit(f"build failed: health data problem: {error}")
+
+
+def apply_health(apis, health):
+    """Return copies of `apis`, flagging those whose URL is in the health state's failing list."""
+    failing = (health or {}).get("failing", {})
+    flagged = []
+    for api in apis:
+        api = dict(api)
+        entry = failing.get(api["url"])
+        if entry:
+            api["health"] = "dead" if entry["failures"] >= DEAD_AFTER else "failing"
+            api["health_error"] = entry["error"]
+            api["health_since"] = entry["first_failed"]
+        flagged.append(api)
+    return flagged
+
+
 def _source_commit(readme_path):
     try:
         result = subprocess.run(
@@ -131,6 +160,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--readme", type=Path, default=README)
     parser.add_argument("--out", type=Path, default=OUT)
+    parser.add_argument("--health", type=Path, default=healthcheck.STATE_PATH, help="failure state written by healthcheck.py")
     args = parser.parse_args(argv)
 
     if not args.readme.exists():
@@ -138,13 +168,23 @@ def main(argv=None):
 
     apis, stats = parse_readme(args.readme.read_text(encoding="utf-8"))
     check_sanity(stats)
+    health = load_health(args.health)
+    apis = apply_health(apis, health)
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    payload = {"source_commit": _source_commit(args.readme), "count": len(apis), "apis": apis}
+    payload = {
+        "source_commit": _source_commit(args.readme),
+        "count": len(apis),
+        "health_checked": health["last_run"],
+        "apis": apis,
+    }
     args.out.write_text(json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8")
+    dead = sum(1 for api in apis if api.get("health") == "dead")
+    failing = sum(1 for api in apis if api.get("health") == "failing")
     print(
         f"wrote {args.out}: {stats['parsed']} APIs in {stats['categories']} categories, "
-        f"{stats['malformed']} malformed rows skipped, {stats['ragged']} ragged rows kept"
+        f"{stats['malformed']} malformed rows skipped, {stats['ragged']} ragged rows kept, "
+        f"{dead} dead and {failing} failing (health checked {health['last_run'] or 'never'})"
     )
 
 

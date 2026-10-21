@@ -11,6 +11,8 @@
   --warn-fg: #6b4a07;
   --neutral-bg: #eceae4;
   --neutral-fg: #46443f;
+  --bad-bg: #f6dcd8;
+  --bad-fg: #7a1f14;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,6 +29,8 @@
     --warn-fg: #f0d995;
     --neutral-bg: #2b2a27;
     --neutral-fg: #cfcdc6;
+    --bad-bg: #4a2420;
+    --bad-fg: #f2b8b0;
   }
 }
 
@@ -99,5 +103,6 @@ button:hover { border-color: var(--muted); }
 }
 .badge.good { background: var(--good-bg); color: var(--good-fg); }
 .badge.warn { background: var(--warn-bg); color: var(--warn-fg); }
+.badge.bad { background: var(--bad-bg); color: var(--bad-fg); }
 
 footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
