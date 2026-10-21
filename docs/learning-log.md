@@ -80,3 +80,28 @@ Plan: nightly job that probes every API URL, remembers failures across nights, a
 - **Mutation checks found redundant code.** Removing `403` from my explicit bot-block list broke no test, because the catch-all "other 4xx means blocked" rule already covered it. I deleted the dead list and kept the rule that does the work; after that, every rule I mutated made a test fail. I also corrected one test of my own: a bare `--version` is a hostname that fails DNS (`dns`), not a `network` error, and `dns` is the result that proves the `--` guard works.
 - **Real-world check.** `probe()` over the same 80 real URLs as my earlier hand calibration (same random seed) gave 68 ok, 7 blocked, 2 timeouts, 2 gone, 1 DNS failure: identical. The same two sites still time out after a retry, which is why a link must fail three runs in a row before the site calls it dead.
 - Run the tests with `python3 -m unittest discover -s tests`.
+
+### H1: state, runner, canary guard and CLI
+
+- Added to `scripts/healthcheck.py`: `update_state` (failure counter per URL, capped at 5, `first_failed` kept, cleared by `ok` or `blocked`), `load_state` and `save_state` (sorted, deterministic, written via a temp file), `interleave_by_host`, `run` (25 workers, one request at a time per host with 0.5s spacing), `canaries_ok`, and a CLI (`python3 scripts/healthcheck.py`, flags `--dry-run`, `--limit`, `--state`, `--workers`, `--spacing`, `--min-urls`).
+- Three failure modes the tests pin down on purpose:
+  - A **damaged state file stops the run** (loaded before any probing, so it fails in seconds). Silently starting over would reset every counter.
+  - The **canary guard** probes 5 near-certain-to-be-up sites; two failures abort the run and leave the state file byte-for-byte untouched.
+  - **Partial runs are safe**: a URL that was not probed keeps its old entry, `--limit` never writes state, and the CLI refuses to run when the README yields fewer than 1,000 URLs (otherwise a format change upstream would prune the whole state).
+- 25 new tests (58 Python tests in total, plus 12 in JavaScript). Because they passed first time I checked them by breaking ten behaviours on purpose. Nine were caught at once; one survived and showed a real gap: the "state untouched" test seeded the file in the exact format the code writes, so a rewrite looked identical. It now seeds a different format, and all ten are caught.
+
+**Real run, from this Mac, all 2,165 URLs:** 295 seconds. 1,848 ok (85.4%), 99 blocked (4.6%), **218 failing (10.1%)**: dns 68, gone 57, timeout 32, error 26, tls 19, refused 12, network 4. The 80-URL sample had suggested 4 to 6%; 80 was too small a sample to trust that number.
+
+What the follow-up checks showed (all read-only):
+
+| Check | Result |
+|---|---|
+| Re-probe the 218 about 10 minutes later | 215 failed again, 214 of them in the same class. Only 3 recovered: `*.docs.apiary.io` pages flapping between error and ok. Failures are overwhelmingly persistent, not flaky. |
+| DNS failures against Cloudflare (1.1.1.1) and Google (8.8.8.8) resolvers | 63 of 66 hosts unresolvable on all three resolvers (real). **3 resolve elsewhere**: `disqus.com`, `developer.foursquare.com`, `verifier.meetchopra.com`. Those are false positives from this machine's own DNS. |
+| tls failures | curl exits 60 (certificate not trusted) and 35 (handshake). Real certificate problems on small sites, which a browser would also warn about. |
+
+Takeaways:
+- **Local runs are only indicative.** A resolver, filter or geo-block on this machine can flag healthy sites. The run that counts is the one on GitHub's runner (H3), and the accuracy audit (H4) should use that output.
+- The 3-in-a-row rule mostly guards against flappers like apiary. Persistent failures reach "dead" on night three either way.
+- For H2: badge wording should follow the error class ("may be gone" for dns, gone and refused; "certificate problem" for tls; "not responding" for timeout and error), not one generic label.
+- Runtime is about 5 minutes, comfortably inside a nightly job.
