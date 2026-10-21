@@ -65,3 +65,18 @@ Tested the bump path end to end on GitHub, not just locally:
 - **Confirmed:** no workflow run exists for the bot's commit. A push made with `GITHUB_TOKEN` does not start another run, so the single-workflow design was necessary, not just tidy.
 - The schedule is registered and the workflow is `active`. The first scheduled run is due at 03:17 UTC the next day, which is still to be confirmed. Scheduled runs only fire from the default branch, and GitHub can delay them under load.
 - Upstream got 265 new APIs and lost 50 in the three weeks between the two commits, so the pin goes stale quickly without this job.
+
+## Link health check
+
+Plan: nightly job that probes every API URL, remembers failures across nights, and flags links that keep failing. Milestones H0 to H4; each is a branch and a PR.
+
+### H0: the probe engine
+
+- `scripts/healthcheck.py` (`classify` and `probe`) and `tests/test_healthcheck.py` (18 tests, run against a local test server that plays every kind of misbehaving site: 404, 410, 500, 403, HEAD-rejected-but-GET-works, redirects, a redirect loop, a slow endpoint, a flaky endpoint, Cloudflare challenge pages, a closed port, an unresolvable host).
+- **Why curl, not Python.** A first sample with Python's `urllib` on this Mac flagged 35 of 40 healthy sites (including github.com) as broken: that Python build has no certificate bundle. A health checker's biggest risk is false positives caused by its own environment. `curl` uses the system certificates. The canary guard planned for H1 covers the same risk at run time.
+- **Classes.** `ok`; `blocked` (reachable but refuses bots: any 4xx other than 404 and 410, plus 999 and Cloudflare challenge pages) which is **not** a failure; failures are `gone` (404, 410), `error` (5xx), `dns`, `refused`, `timeout`, `tls`, `network`. Cloudflare's 52x "origin is down" codes stay real failures, only its 403 and 503 challenges count as blocked.
+- Probe order: HEAD, then GET if HEAD is not ok (15 of 80 sampled URLs needed the GET). One retry after 2 seconds on any failure.
+- **Safety.** URLs come from a list anyone can edit. `curl` is restricted to http and https (`--proto`, `--proto-redir`) so `file://` and friends are never fetched, and `--` before the URL stops a URL such as `--version` being read as an option. A missing `curl` raises an error instead of marking every link dead.
+- **Mutation checks found redundant code.** Removing `403` from my explicit bot-block list broke no test, because the catch-all "other 4xx means blocked" rule already covered it. I deleted the dead list and kept the rule that does the work; after that, every rule I mutated made a test fail. I also corrected one test of my own: a bare `--version` is a hostname that fails DNS (`dns`), not a `network` error, and `dns` is the result that proves the `--` guard works.
+- **Real-world check.** `probe()` over the same 80 real URLs as my earlier hand calibration (same random seed) gave 68 ok, 7 blocked, 2 timeouts, 2 gone, 1 DNS failure: identical. The same two sites still time out after a retry, which is why a link must fail three runs in a row before the site calls it dead.
+- Run the tests with `python3 -m unittest discover -s tests`.
