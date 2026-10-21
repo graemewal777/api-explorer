@@ -37,3 +37,15 @@ One entry per milestone: what we did, and the GitHub idea it taught.
 - `concurrency: pages` with `cancel-in-progress: false` stops two deploys running at once without killing one already in progress.
 - Looked up the current releases of each action instead of guessing: `checkout` v7, `configure-pages` v6, `upload-pages-artifact` v5, `deploy-pages` v5. Tags like `@v7` follow the newest v7; pinning to a full commit hash is stricter but needs manual updates.
 - Pages must be switched on once in the repo settings with the source set to "GitHub Actions" (not "Deploy from a branch"). Before that, the deploy job has nowhere to publish, so enabling it comes before merging this workflow.
+- **Result (live):** Pages enabled with source "GitHub Actions"; merging the PR started the first deploy automatically and it passed in about 20 seconds. Live site: https://graemewal777.github.io/api-explorer/. The live `apis.json` matched the local build (2,169 APIs at upstream commit `339ab55`), a four-filter deep link gave 16 results (independent count: 16), and the console was clean.
+- The first run warned that `ubuntu-latest` is migrating to Ubuntu 26 from October 19, 2026. M4 pins Python and Node explicitly so a runner image change can't silently break the build.
+
+## M4: nightly sync
+
+- The workflow now also runs on a schedule (`17 3 * * *`, 03:17 UTC daily; an off-the-hour minute avoids the busiest queue times) and from the manual button. Scheduled runs use the default branch only.
+- `scripts/bump-submodule.sh` moves the `vendor/public-apis` pin to upstream's latest commit and commits it as `github-actions[bot]`, with a compare link in the message. It does nothing if the pin is current, and it never pushes. Keeping it as a script (not inline YAML) meant I could test it on this machine first: no-op case, real bump from an old pin, bot commit, and a clean second run all behaved.
+- `.gitmodules` now says `branch = master`, so `git submodule update --remote` follows upstream's default branch on purpose, not by default.
+- The bump step runs only for scheduled or manual runs **and** only on `refs/heads/main`. Without the branch guard, a manual run from a feature branch would push that branch's commits to `main`.
+- The bump is pushed with the default `GITHUB_TOKEN`. Pushes made that way do **not** start other workflow runs, which is why bump and deploy live in one workflow: the same run goes on to build and deploy the bumped tree.
+- Permissions are per job: `build` gets `contents: write` and `pages: write`; `deploy` gets `pages: write` and `id-token: write`. Everything else is read-only.
+- Still to watch: scheduled workflows in public repos are disabled after 60 days without repo activity. Upstream changes most days, so bumps should keep the repo active, but it is unconfirmed. Check the Actions tab now and then.

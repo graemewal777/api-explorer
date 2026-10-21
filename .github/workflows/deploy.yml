@@ -3,12 +3,12 @@ name: Deploy site
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: "17 3 * * *"
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -17,10 +17,30 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
     steps:
       - uses: actions/checkout@v7
         with:
           submodules: true
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+
+      # Scheduled and manual runs on main move the pin to upstream's latest.
+      # Pushes deploy whatever is pinned. The bump is pushed with GITHUB_TOKEN,
+      # which does not start another workflow run, so this same run deploys it.
+      - name: Bump public-apis to upstream's latest
+        if: github.event_name != 'push' && github.ref == 'refs/heads/main'
+        run: |
+          scripts/bump-submodule.sh
+          git push origin HEAD:main
 
       - name: Test the parser
         run: python3 -m unittest discover -s tests
@@ -40,6 +60,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
