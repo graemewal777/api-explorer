@@ -1,0 +1,46 @@
+name: Link health check
+
+on:
+  schedule:
+    - cron: "47 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: health
+  cancel-in-progress: false
+
+jobs:
+  check:
+    # Commits to main and starts a site redeploy, so it only ever runs from main.
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: Probe every link
+        run: |
+          set -o pipefail   # without this, tee would hide a failing run (a tripped canary guard)
+          echo "### Link health check $(date -u +%F)" >> "$GITHUB_STEP_SUMMARY"
+          python3 scripts/healthcheck.py | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit the new state
+        run: scripts/commit-health.sh
+
+      # A push made with GITHUB_TOKEN does not start other workflows, but a manual dispatch does.
+      - name: Redeploy the site
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main

@@ -25,6 +25,16 @@ python3 scripts/build.py                      # reads the submodule, writes site
 cd site && python3 -m http.server 8765        # then open http://127.0.0.1:8765/
 ```
 
+## Link health check
+
+A nightly workflow (`.github/workflows/health.yml`, 02:47 UTC) probes every API URL and records which ones fail in `data/health.json`. A link is flagged "possibly dead" after three failed runs in a row. Reachable-but-bot-blocking sites (403, Cloudflare challenges) are never counted as failures.
+
+```bash
+python3 scripts/healthcheck.py --dry-run --limit 50    # try it locally on 50 URLs; writes nothing
+```
+
+Local runs are only indicative: a resolver or filter on your machine can flag healthy sites. The nightly run on GitHub's runner is the one the site uses.
+
 ## Tests
 
 ```bash
