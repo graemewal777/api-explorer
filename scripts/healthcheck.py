@@ -20,8 +20,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 
-import build
-
 USER_AGENT = "api-explorer-healthcheck/1.0 (+https://github.com/graemewal777/api-explorer)"
 TIMEOUT = 10
 MAX_REDIRECTS = 5
@@ -278,6 +276,8 @@ def canaries_ok(probe_fn=probe, canaries=CANARIES):
 # ---- command line ----------------------------------------------------------
 
 def main(argv=None, probe_fn=probe, today=None):
+    import build  # here, not at the top: build.py imports this module for the state loader
+
     parser = argparse.ArgumentParser(description="Probe every API URL and update the failure state.")
     parser.add_argument("--readme", type=Path, default=build.README)
     parser.add_argument("--state", type=Path, default=STATE_PATH)

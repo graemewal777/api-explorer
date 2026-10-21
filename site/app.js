@@ -8,6 +8,7 @@
     noKey: document.getElementById("nokey"),
     https: document.getElementById("https"),
     cors: document.getElementById("cors"),
+    hideDead: document.getElementById("hidedead"),
     reset: document.getElementById("reset"),
     status: document.getElementById("status"),
     results: document.getElementById("results"),
@@ -26,6 +27,7 @@
       noKey: el.noKey.checked,
       https: el.https.checked,
       cors: el.cors.checked,
+      hideDead: el.hideDead.checked,
     };
   }
 
@@ -35,6 +37,7 @@
     el.noKey.checked = state.noKey;
     el.https.checked = state.https;
     el.cors.checked = state.cors;
+    el.hideDead.checked = state.hideDead;
   }
 
   function badge(text, kind) {
@@ -67,6 +70,12 @@
 
     var badges = document.createElement("div");
     badges.className = "badges";
+    var health = F.healthBadge(api);
+    if (health) {
+      var healthEl = badge(health.text, health.kind);
+      healthEl.title = health.title;
+      badges.appendChild(healthEl);
+    }
     badges.appendChild(badge(api.category));
     badges.appendChild(api.auth === "No" ? badge("No key", "good") : badge("Key: " + api.auth, "warn"));
     if (api.https === true) badges.appendChild(badge("HTTPS", "good"));
@@ -122,10 +131,16 @@
       el.footer.append(". " + data.count + " APIs.");
     }
 
+    if (data.health_checked) {
+      var dead = 0;
+      apis.forEach(function (api) { if (api.health === "dead") dead++; });
+      el.footer.append(" Links last checked " + data.health_checked + (dead ? ", " + dead + " possibly dead." : "."));
+    }
+
     ["input", "change"].forEach(function (type) {
       el.q.addEventListener(type, function () { update(false); });
     });
-    [el.category, el.noKey, el.https, el.cors].forEach(function (control) {
+    [el.category, el.noKey, el.https, el.cors, el.hideDead].forEach(function (control) {
       control.addEventListener("change", function () { update(false); });
     });
     el.reset.addEventListener("click", function () {
