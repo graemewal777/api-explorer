@@ -49,3 +49,19 @@ One entry per milestone: what we did, and the GitHub idea it taught.
 - The bump is pushed with the default `GITHUB_TOKEN`. Pushes made that way do **not** start other workflow runs, which is why bump and deploy live in one workflow: the same run goes on to build and deploy the bumped tree.
 - Permissions are per job: `build` gets `contents: write` and `pages: write`; `deploy` gets `pages: write` and `id-token: write`. Everything else is read-only.
 - Still to watch: scheduled workflows in public repos are disabled after 60 days without repo activity. Upstream changes most days, so bumps should keep the repo active, but it is unconfirmed. Check the Actions tab now and then.
+
+### M4 proof (run 2026-10-21)
+
+Tested the bump path end to end on GitHub, not just locally:
+
+| Step | Live site | Evidence |
+|---|---|---|
+| Baseline | 2,169 APIs at upstream `339ab55` | First run of the new workflow, pushed to `main`, passed |
+| Pin to old commit (PR #6) | **1,954 APIs at `87ae94a`** (2026-09-30) | Merged, deploy passed, live `apis.json` showed 1,954 |
+| Manual "Run workflow" on `main` | Bump step logged `bumped public-apis 87ae94a -> 339ab55` | Bot pushed `287c700` to `main`, same run built and deployed |
+| After | **2,169 APIs at `339ab55`** | Live `apis.json` matched upstream's latest commit |
+
+- The bot commit (`github-actions[bot]`, "Bump public-apis to 339ab55") sits in `main`'s history with the compare link in its body.
+- **Confirmed:** no workflow run exists for the bot's commit. A push made with `GITHUB_TOKEN` does not start another run, so the single-workflow design was necessary, not just tidy.
+- The schedule is registered and the workflow is `active`. The first scheduled run is due at 03:17 UTC the next day, which is still to be confirmed. Scheduled runs only fire from the default branch, and GitHub can delay them under load.
+- Upstream got 265 new APIs and lost 50 in the three weeks between the two commits, so the pin goes stale quickly without this job.
