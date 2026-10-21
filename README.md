@@ -18,6 +18,20 @@ Already cloned without it? Run:
 git submodule update --init
 ```
 
+## Run it locally
+
+```bash
+python3 scripts/build.py                      # reads the submodule, writes site/apis.json
+cd site && python3 -m http.server 8765        # then open http://127.0.0.1:8765/
+```
+
+## Tests
+
+```bash
+python3 -m unittest discover -s tests         # parser
+node --test tests/filter.test.js              # search and filters
+```
+
 ## Status
 
 Work is tracked in [docs/learning-log.md](docs/learning-log.md).
