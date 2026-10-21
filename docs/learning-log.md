@@ -28,3 +28,12 @@ One entry per milestone: what we did, and the GitHub idea it taught.
 - Checked in a real browser against counts computed separately in Python: search "weather" gives 56, Weather plus all three toggles gives 13, the three toggles alone give 516, and the deep link `#q=bitcoin&nokey=1` gives 12. All matched.
 - Safety: the data comes from a list anyone can edit upstream, so cards are built with `textContent` (never `innerHTML`) and links only use `http(s)` URLs with `rel="noopener noreferrer"`.
 - To view it locally: `python3 scripts/build.py`, then `cd site && python3 -m http.server 8765` and open http://127.0.0.1:8765/. The page needs `site/apis.json`, which is generated and gitignored.
+
+## M3: Pages deploy workflow
+
+- `.github/workflows/deploy.yml` runs on every push to `main`, and from the "Run workflow" button (`workflow_dispatch`). The nightly schedule comes in M4.
+- Two jobs. `build` checks out with `submodules: true`, runs both test suites, runs `scripts/build.py`, and uploads `site/` as the Pages artifact. `deploy` only runs if `build` passed, so a failing test blocks the deploy.
+- Permissions are the minimum: `contents: read`, `pages: write`, `id-token: write`. The deploy job uses a `github-pages` environment, which is where the live URL is reported.
+- `concurrency: pages` with `cancel-in-progress: false` stops two deploys running at once without killing one already in progress.
+- Looked up the current releases of each action instead of guessing: `checkout` v7, `configure-pages` v6, `upload-pages-artifact` v5, `deploy-pages` v5. Tags like `@v7` follow the newest v7; pinning to a full commit hash is stricter but needs manual updates.
+- Pages must be switched on once in the repo settings with the source set to "GitHub Actions" (not "Deploy from a branch"). Before that, the deploy job has nowhere to publish, so enabling it comes before merging this workflow.
