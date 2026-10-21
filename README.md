@@ -1,8 +1,8 @@
 # api-explorer
 
-A searchable explorer for the [public-apis](https://github.com/public-apis/public-apis) list of free APIs. Built as a project for learning GitHub: submodules, Actions, Pages, issues and pull requests.
+A searchable explorer for the [public-apis](https://github.com/public-apis/public-apis) list of free APIs. **Live site: https://graemewal777.github.io/api-explorer/** Built as a project for learning GitHub: submodules, Actions, Pages, issues and pull requests.
 
-Data comes from the upstream list, included here as a git submodule at `vendor/public-apis/`. This repo records which upstream commit it uses (the "pin"), and a nightly job will move the pin forward.
+Data comes from the upstream list, included here as a git submodule at `vendor/public-apis/`. This repo records which upstream commit it uses (the "pin"), and a nightly GitHub Actions job (03:17 UTC) moves the pin forward, rebuilds and redeploys the site.
 
 ## Cloning
 
