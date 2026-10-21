@@ -2,3 +2,4 @@
 	path = vendor/public-apis
 	url = https://github.com/public-apis/public-apis.git
 	shallow = true
+	branch = master
