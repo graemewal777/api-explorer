@@ -27,7 +27,7 @@
   },
   "http://data.gov.ro/": {
    "error": "timeout",
-   "failures": 2,
+   "failures": 3,
    "first_failed": "2026-10-29"
   },
   "http://dev.npr.org/api/": {
@@ -111,7 +111,7 @@
    "first_failed": "2026-10-21"
   },
   "https://api.amethyste.moe/": {
-   "error": "timeout",
+   "error": "refused",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -144,11 +144,6 @@
    "error": "gone",
    "failures": 5,
    "first_failed": "2026-10-21"
-  },
-  "https://api.ipma.pt/open-data/": {
-   "error": "timeout",
-   "failures": 1,
-   "first_failed": "2026-10-30"
   },
   "https://api.mycelium.global/docs/v1": {
    "error": "timeout",
@@ -227,7 +222,7 @@
   },
   "https://bucketlist.nl/samenwerken?lang=en#droom-van-de-dag": {
    "error": "timeout",
-   "failures": 2,
+   "failures": 3,
    "first_failed": "2026-10-29"
   },
   "https://catchtheshow.herokuapp.com/api/documentation": {
@@ -247,7 +242,7 @@
   },
   "https://cloud.ibm.com/apidocs/natural-language-understanding/natural-language-understanding": {
    "error": "error",
-   "failures": 3,
+   "failures": 4,
    "first_failed": "2026-10-28"
   },
   "https://code.gov": {
@@ -271,7 +266,7 @@
    "first_failed": "2026-10-21"
   },
   "https://countapi.xyz": {
-   "error": "dns",
+   "error": "timeout",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -327,7 +322,7 @@
   },
   "https://datos.gob.ar/": {
    "error": "timeout",
-   "failures": 3,
+   "failures": 4,
    "first_failed": "2026-10-28"
   },
   "https://designer.mocky.io/": {
@@ -622,7 +617,7 @@
   },
   "https://kiprio.com/v1/email-validate": {
    "error": "gone",
-   "failures": 4,
+   "failures": 5,
    "first_failed": "2026-10-27"
   },
   "https://kiprio.com/v1/translate": {
@@ -636,7 +631,7 @@
    "first_failed": "2026-10-21"
   },
   "https://lcboapi.com/": {
-   "error": "timeout",
+   "error": "dns",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -680,20 +675,15 @@
    "failures": 5,
    "first_failed": "2026-10-21"
   },
-  "https://microenv.com/": {
-   "error": "tls",
-   "failures": 5,
-   "first_failed": "2026-10-21"
+  "https://messari.io/api": {
+   "error": "gone",
+   "failures": 1,
+   "first_failed": "2026-10-31"
   },
   "https://mydreamthreads.xyz/dream-interpretation-api": {
    "error": "tls",
    "failures": 5,
    "first_failed": "2026-10-21"
-  },
-  "https://myttc.ca/developers": {
-   "error": "error",
-   "failures": 1,
-   "first_failed": "2026-10-30"
   },
   "https://new-kbbi-api.herokuapp.com/": {
    "error": "gone",
@@ -752,12 +742,7 @@
   },
   "https://phishstats.info/": {
    "error": "error",
-   "failures": 1,
-   "first_failed": "2026-10-30"
-  },
-  "https://piszczek.pl/tools/api": {
-   "error": "timeout",
-   "failures": 1,
+   "failures": 2,
    "first_failed": "2026-10-30"
   },
   "https://pixelencounter.com/api": {
@@ -766,7 +751,7 @@
    "first_failed": "2026-10-21"
   },
   "https://proxykingdom.com": {
-   "error": "tls",
+   "error": "dns",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -782,7 +767,7 @@
   },
   "https://quelllm.fr/api/": {
    "error": "network",
-   "failures": 4,
+   "failures": 5,
    "first_failed": "2026-10-27"
   },
   "https://quickmocker.com": {
@@ -796,7 +781,7 @@
    "first_failed": "2026-10-21"
   },
   "https://random-data-api.com": {
-   "error": "dns",
+   "error": "timeout",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -809,6 +794,11 @@
    "error": "dns",
    "failures": 5,
    "first_failed": "2026-10-21"
+  },
+  "https://resmush.it/api": {
+   "error": "network",
+   "failures": 1,
+   "first_failed": "2026-10-31"
   },
   "https://rustybeer.herokuapp.com/": {
    "error": "gone",
@@ -857,7 +847,7 @@
   },
   "https://techrole.ru/open-data-daily": {
    "error": "timeout",
-   "failures": 2,
+   "failures": 3,
    "first_failed": "2026-10-29"
   },
   "https://tenders.guru/es/api": {
@@ -906,13 +896,13 @@
    "first_failed": "2026-10-21"
   },
   "https://waifu.im/docs": {
-   "error": "dns",
+   "error": "gone",
    "failures": 5,
    "first_failed": "2026-10-25"
   },
   "https://waifu.pics/docs": {
    "error": "network",
-   "failures": 2,
+   "failures": 3,
    "first_failed": "2026-10-29"
   },
   "https://walltime.info/api.html": {
@@ -930,13 +920,18 @@
    "failures": 5,
    "first_failed": "2026-10-21"
   },
+  "https://www.Styvio.com": {
+   "error": "tls",
+   "failures": 1,
+   "first_failed": "2026-10-31"
+  },
   "https://www.abibliadigital.com.br/en": {
    "error": "error",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
   "https://www.amdoren.com/currency-api/": {
-   "error": "timeout",
+   "error": "tls",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -997,7 +992,7 @@
   },
   "https://www.mercadobitcoin.com.br/api-doc/": {
    "error": "gone",
-   "failures": 2,
+   "failures": 3,
    "first_failed": "2026-10-29"
   },
   "https://www.okex.com/docs/": {
@@ -1019,11 +1014,6 @@
    "error": "gone",
    "failures": 5,
    "first_failed": "2026-10-21"
-  },
-  "https://www.unblockmaster.com/free-ip-api/": {
-   "error": "tls",
-   "failures": 1,
-   "first_failed": "2026-10-30"
   },
   "https://www.vatcomply.com/documentation": {
    "error": "gone",
@@ -1051,5 +1041,5 @@
    "first_failed": "2026-10-21"
   }
  },
- "last_run": "2026-10-30"
+ "last_run": "2026-10-31"
 }
