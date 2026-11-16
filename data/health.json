@@ -16,7 +16,7 @@
    "first_failed": "2026-10-21"
   },
   "http://bnb.data.bl.uk/": {
-   "error": "timeout",
+   "error": "refused",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -51,7 +51,7 @@
    "first_failed": "2026-10-21"
   },
   "http://jservice.io": {
-   "error": "timeout",
+   "error": "network",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -86,7 +86,7 @@
    "first_failed": "2026-10-21"
   },
   "http://www.pm25.in/api_doc": {
-   "error": "timeout",
+   "error": "network",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -114,6 +114,11 @@
    "error": "gone",
    "failures": 5,
    "first_failed": "2026-11-10"
+  },
+  "https://amiiboapi.com/": {
+   "error": "timeout",
+   "failures": 1,
+   "first_failed": "2026-11-16"
   },
   "https://api-docs.pgamerx.com/": {
    "error": "dns",
@@ -165,11 +170,6 @@
    "failures": 5,
    "first_failed": "2026-10-21"
   },
-  "https://api.ipma.pt/open-data/": {
-   "error": "timeout",
-   "failures": 1,
-   "first_failed": "2026-11-15"
-  },
   "https://api.mycelium.global/docs/v1": {
    "error": "timeout",
    "failures": 5,
@@ -207,7 +207,7 @@
   },
   "https://apify.com/founder-experiment/us-state-government-jobs": {
    "error": "gone",
-   "failures": 1,
+   "failures": 2,
    "first_failed": "2026-11-15"
   },
   "https://apimedic.com/": {
@@ -230,6 +230,11 @@
    "failures": 5,
    "first_failed": "2026-10-21"
   },
+  "https://best-tempmail.com/api": {
+   "error": "error",
+   "failures": 1,
+   "first_failed": "2026-11-16"
+  },
   "https://bitcoincharts.com/about/exchanges/": {
    "error": "timeout",
    "failures": 5,
@@ -237,7 +242,7 @@
   },
   "https://bitcoinyield.co/docs": {
    "error": "gone",
-   "failures": 4,
+   "failures": 5,
    "first_failed": "2026-11-12"
   },
   "https://bittrex.github.io/api/v3": {
@@ -264,11 +269,6 @@
    "error": "gone",
    "failures": 5,
    "first_failed": "2026-10-21"
-  },
-  "https://cityalert.live/developers": {
-   "error": "gone",
-   "failures": 1,
-   "first_failed": "2026-11-15"
   },
   "https://classify-web.herokuapp.com/#/api": {
    "error": "gone",
@@ -306,7 +306,7 @@
    "first_failed": "2026-10-21"
   },
   "https://countapi.xyz": {
-   "error": "timeout",
+   "error": "dns",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -329,11 +329,6 @@
    "error": "timeout",
    "failures": 5,
    "first_failed": "2026-10-21"
-  },
-  "https://data.gov.be/": {
-   "error": "error",
-   "failures": 1,
-   "first_failed": "2026-11-15"
   },
   "https://data.gov.in/": {
    "error": "refused",
@@ -394,6 +389,11 @@
    "error": "gone",
    "failures": 5,
    "first_failed": "2026-10-21"
+  },
+  "https://developers.bb.com.br/home": {
+   "error": "gone",
+   "failures": 1,
+   "first_failed": "2026-11-16"
   },
   "https://developers.decathlon.com/products/sport-places": {
    "error": "dns",
@@ -557,7 +557,7 @@
   },
   "https://github.com/fasuizu-br/brainiall-transcription-skill": {
    "error": "gone",
-   "failures": 4,
+   "failures": 5,
    "first_failed": "2026-11-12"
   },
   "https://github.com/melpon/wandbox/blob/master/kennel2/API.rst": {
@@ -651,7 +651,7 @@
    "first_failed": "2026-10-21"
   },
   "https://lcboapi.com/": {
-   "error": "timeout",
+   "error": "dns",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -679,11 +679,6 @@
    "error": "tls",
    "failures": 5,
    "first_failed": "2026-10-21"
-  },
-  "https://memesio.com/developers/api": {
-   "error": "error",
-   "failures": 1,
-   "first_failed": "2026-11-15"
   },
   "https://mercury.postlight.com/web-parser/": {
    "error": "dns",
@@ -730,11 +725,6 @@
    "failures": 5,
    "first_failed": "2026-10-21"
   },
-  "https://open.caiyunapp.com/ColorfulClouds_Weather_API": {
-   "error": "timeout",
-   "failures": 3,
-   "first_failed": "2026-11-13"
-  },
   "https://openvisionapi.com": {
    "error": "tls",
    "failures": 5,
@@ -760,20 +750,10 @@
    "failures": 5,
    "first_failed": "2026-10-21"
   },
-  "https://picsum.photos/": {
-   "error": "timeout",
-   "failures": 4,
-   "first_failed": "2026-11-12"
-  },
   "https://pixelencounter.com/api": {
    "error": "tls",
    "failures": 5,
    "first_failed": "2026-10-21"
-  },
-  "https://propraven.com/developers": {
-   "error": "error",
-   "failures": 3,
-   "first_failed": "2026-11-13"
   },
   "https://proxykingdom.com": {
    "error": "dns",
@@ -801,7 +781,7 @@
    "first_failed": "2026-10-21"
   },
   "https://random-data-api.com": {
-   "error": "timeout",
+   "error": "dns",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -809,11 +789,6 @@
    "error": "gone",
    "failures": 5,
    "first_failed": "2026-10-21"
-  },
-  "https://random-words-api.vercel.app/word": {
-   "error": "error",
-   "failures": 1,
-   "first_failed": "2026-11-15"
   },
   "https://rejax.io/": {
    "error": "dns",
@@ -866,7 +841,7 @@
    "first_failed": "2026-10-21"
   },
   "https://techrole.ru/open-data-daily": {
-   "error": "dns",
+   "error": "tls",
    "failures": 5,
    "first_failed": "2026-10-29"
   },
@@ -907,18 +882,13 @@
   },
   "https://tillacrypto.com/docs": {
    "error": "error",
-   "failures": 3,
+   "failures": 4,
    "first_failed": "2026-11-13"
   },
   "https://tools.gptshopltd.com/api/uk-tenders/": {
    "error": "gone",
    "failures": 5,
    "first_failed": "2026-11-04"
-  },
-  "https://userguide.rescuegroups.org/display/APIDG/API+Developers+Guide+Home": {
-   "error": "network",
-   "failures": 1,
-   "first_failed": "2026-11-15"
   },
   "https://vadivelu.anoram.com/": {
    "error": "dns",
@@ -946,7 +916,7 @@
    "first_failed": "2026-11-09"
   },
   "https://walltime.info/api.html": {
-   "error": "timeout",
+   "error": "dns",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -966,7 +936,7 @@
    "first_failed": "2026-10-21"
   },
   "https://www.base-api.io/": {
-   "error": "tls",
+   "error": "dns",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -975,13 +945,18 @@
    "failures": 5,
    "first_failed": "2026-10-21"
   },
+  "https://www.careerjet.com/partners/api/": {
+   "error": "timeout",
+   "failures": 1,
+   "first_failed": "2026-11-16"
+  },
   "https://www.cloverly.com/carbon-offset-documentation": {
    "error": "gone",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
   "https://www.cryptonator.com/api/": {
-   "error": "timeout",
+   "error": "dns",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -999,6 +974,11 @@
    "error": "dns",
    "failures": 5,
    "first_failed": "2026-10-21"
+  },
+  "https://www.getthedata.com/bng2latlong": {
+   "error": "timeout",
+   "failures": 1,
+   "first_failed": "2026-11-16"
   },
   "https://www.hpb.health.gov.lk/en/api-documentation": {
    "error": "tls",
@@ -1025,6 +1005,11 @@
    "failures": 5,
    "first_failed": "2026-10-21"
   },
+  "https://www.opendata.nhs.scot": {
+   "error": "network",
+   "failures": 1,
+   "first_failed": "2026-11-16"
+  },
   "https://www.roadgoat.com/business/cities-api": {
    "error": "timeout",
    "failures": 5,
@@ -1042,7 +1027,7 @@
   },
   "https://www.tronalddump.io/": {
    "error": "tls",
-   "failures": 3,
+   "failures": 4,
    "first_failed": "2026-11-13"
   },
   "https://www.vatcomply.com/documentation": {
@@ -1071,5 +1056,5 @@
    "first_failed": "2026-10-21"
   }
  },
- "last_run": "2026-11-15"
+ "last_run": "2026-11-16"
 }
