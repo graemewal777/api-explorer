@@ -202,7 +202,7 @@
   },
   "https://apify.com/founder-experiment/us-state-government-jobs": {
    "error": "gone",
-   "failures": 3,
+   "failures": 4,
    "first_failed": "2026-11-15"
   },
   "https://apimedic.com/": {
@@ -270,10 +270,25 @@
    "failures": 5,
    "first_failed": "2026-10-21"
   },
+  "https://cloud.ibm.com/apidocs/natural-language-understanding": {
+   "error": "timeout",
+   "failures": 1,
+   "first_failed": "2026-11-18"
+  },
+  "https://cloud.ibm.com/docs/text-to-speech/getting-started.html": {
+   "error": "timeout",
+   "failures": 1,
+   "first_failed": "2026-11-18"
+  },
   "https://code.gov": {
    "error": "gone",
    "failures": 5,
    "first_failed": "2026-10-21"
+  },
+  "https://codeberg.org/api/swagger": {
+   "error": "dns",
+   "failures": 1,
+   "first_failed": "2026-11-18"
   },
   "https://codedetectionapi.runtime.dev": {
    "error": "tls",
@@ -395,6 +410,11 @@
    "failures": 5,
    "first_failed": "2026-10-21"
   },
+  "https://developers.enigma.com/docs": {
+   "error": "gone",
+   "failures": 1,
+   "first_failed": "2026-11-18"
+  },
   "https://developers.gfycat.com/api/": {
    "error": "dns",
    "failures": 5,
@@ -472,7 +492,7 @@
   },
   "https://downforjustmeoreveryone.com/api": {
    "error": "refused",
-   "failures": 1,
+   "failures": 2,
    "first_failed": "2026-11-17"
   },
   "https://dummyproducts-api.herokuapp.com/": {
@@ -499,6 +519,11 @@
    "error": "network",
    "failures": 5,
    "first_failed": "2026-10-21"
+  },
+  "https://fourtonfish.com/project/hellosalut-api/": {
+   "error": "dns",
+   "failures": 1,
+   "first_failed": "2026-11-18"
   },
   "https://framejet.dev/docs": {
    "error": "error",
@@ -665,11 +690,6 @@
    "failures": 5,
    "first_failed": "2026-10-21"
   },
-  "https://messari.io/api": {
-   "error": "gone",
-   "failures": 5,
-   "first_failed": "2026-11-06"
-  },
   "https://mydreamthreads.xyz/dream-interpretation-api": {
    "error": "tls",
    "failures": 5,
@@ -702,13 +722,18 @@
   },
   "https://nubra.io/products/api/docs/": {
    "error": "timeout",
-   "failures": 1,
+   "failures": 2,
    "first_failed": "2026-11-17"
   },
   "https://oceanfacts.herokuapp.com/": {
    "error": "gone",
    "failures": 5,
    "first_failed": "2026-10-21"
+  },
+  "https://open.caiyunapp.com/ColorfulClouds_Weather_API": {
+   "error": "timeout",
+   "failures": 1,
+   "first_failed": "2026-11-18"
   },
   "https://openvisionapi.com": {
    "error": "tls",
@@ -779,16 +804,6 @@
    "error": "dns",
    "failures": 5,
    "first_failed": "2026-10-21"
-  },
-  "https://represent.opennorth.ca/": {
-   "error": "tls",
-   "failures": 1,
-   "first_failed": "2026-11-17"
-  },
-  "https://resmush.it/api": {
-   "error": "network",
-   "failures": 5,
-   "first_failed": "2026-11-09"
   },
   "https://rustybeer.herokuapp.com/": {
    "error": "gone",
@@ -880,6 +895,11 @@
    "failures": 5,
    "first_failed": "2026-10-21"
   },
+  "https://vk.com/dev/sites": {
+   "error": "timeout",
+   "failures": 1,
+   "first_failed": "2026-11-18"
+  },
   "https://voxodds.com/api": {
    "error": "gone",
    "failures": 5,
@@ -931,7 +951,7 @@
    "first_failed": "2026-10-21"
   },
   "https://www.cryptonator.com/api/": {
-   "error": "dns",
+   "error": "timeout",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -950,11 +970,6 @@
    "failures": 5,
    "first_failed": "2026-10-21"
   },
-  "https://www.getthedata.com/bng2latlong": {
-   "error": "timeout",
-   "failures": 2,
-   "first_failed": "2026-11-16"
-  },
   "https://www.hpb.health.gov.lk/en/api-documentation": {
    "error": "tls",
    "failures": 5,
@@ -966,7 +981,7 @@
    "first_failed": "2026-10-21"
   },
   "https://www.meaningcloud.com/developer/sentiment-analysis": {
-   "error": "timeout",
+   "error": "dns",
    "failures": 5,
    "first_failed": "2026-10-21"
   },
@@ -995,11 +1010,6 @@
    "failures": 5,
    "first_failed": "2026-10-21"
   },
-  "https://www.tronalddump.io/": {
-   "error": "tls",
-   "failures": 5,
-   "first_failed": "2026-11-13"
-  },
   "https://www.vatcomply.com/documentation": {
    "error": "gone",
    "failures": 5,
@@ -1026,5 +1036,5 @@
    "first_failed": "2026-10-21"
   }
  },
- "last_run": "2026-11-17"
+ "last_run": "2026-11-18"
 }
